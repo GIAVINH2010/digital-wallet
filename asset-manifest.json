@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/digital-wallet/static/css/main.dc45acbd.chunk.css",
-    "main.js": "/digital-wallet/static/js/main.40b4ca18.chunk.js",
-    "main.js.map": "/digital-wallet/static/js/main.40b4ca18.chunk.js.map",
+    "main.js": "/digital-wallet/static/js/main.48a97bd7.chunk.js",
+    "main.js.map": "/digital-wallet/static/js/main.48a97bd7.chunk.js.map",
     "runtime-main.js": "/digital-wallet/static/js/runtime-main.ca92c615.js",
     "runtime-main.js.map": "/digital-wallet/static/js/runtime-main.ca92c615.js.map",
     "static/js/2.7c86c0b3.chunk.js": "/digital-wallet/static/js/2.7c86c0b3.chunk.js",
@@ -23,6 +23,6 @@
     "static/js/runtime-main.ca92c615.js",
     "static/js/2.7c86c0b3.chunk.js",
     "static/css/main.dc45acbd.chunk.css",
-    "static/js/main.40b4ca18.chunk.js"
+    "static/js/main.48a97bd7.chunk.js"
   ]
 }

@@ -1,53 +1,96 @@
-import React from "react";
-import { TextField, IconButton, InputLabel, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { useState, MouseEvent } from "react";
+import { useSelector } from "react-redux";
+import { TextField, IconButton, InputLabel, Dialog, DialogTitle, DialogContent, InputAdornment } from '@mui/material';
 import { Close } from '@mui/icons-material'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import Currency from "core/components/Assets/Currency";
+import AssetItem from "core/components/Assets/AssetItem";
+import usd from 'assets/icons/currencies/usd.png'
+import yen from 'assets/icons/currencies/yen.png'
+import eur from 'assets/icons/currencies/eur.png'
+import layerIcon from 'assets/icons/layer-icon.svg'
+
+import { RootState } from 'store/store';
+import { getWallet } from 'modules/home/store/actions';
 
 type Inputs = {
-  from: string;
   to: string;
-  asset: number;
+  asset: string;
   amount: number;
 };
 
+type ChosenAsset = {
+  name: string
+  balance: number
+}
+
 const SendAssetForm = () => {
   const history = useHistory();
+
+  const [chosenAsset, setChosenAsset] = useState<ChosenAsset>({
+    name: "",
+    balance: 0
+  });
+  const [openAssetDialog, setOpenAssetDialog] = useState<boolean>(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = useState<boolean>(false);
+
+  const wallet = useSelector((state: RootState) => state.home.wallet)
+
   const {
     register,
     handleSubmit,
-    // watch,
+    setValue,
+    getValues,
     formState: { errors }
   } = useForm<Inputs>();
 
-  // const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const [openAssetDialog, setOpenAssetDialog] = React.useState<boolean>(false);
 
-  // const handleClickShowPassword = () => {
-  //   setShowPassword(!showPassword)
-  // };
-
-  const handleClickCancle = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickCancle = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     history.goBack()
   }
 
-  const handleFocusAsset = () => {
+  const handleClickAsset = () => {
+    getWallet(2)
     setOpenAssetDialog(true)
   }
 
+  const handleChooseAsset = (name: string, balance: number) => {
+    setValue("asset", name)
+    setOpenAssetDialog(false)
+    setChosenAsset({ name, balance })
+  }
+
+  const handleClickMax = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (chosenAsset.balance === 0) return true
+    setValue("amount", chosenAsset.balance)
+  }
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
+    console.log('%cForm.tsx line:71 data', 'color: white; background-color: #007acc;', data);
+    setOpenSuccessDialog(true)
+
   }; // your form submit function which will invoke after successful validation
 
-  // console.log(watch("password")); // you can watch individual input by pass the name of the input
+  const assetIcon = (name: string) => {
+    switch (name) {
+      case "USD":
+        return <img width={30} src={usd} alt="icon" />
+      case "EUR":
+        return <img width={30} src={eur} alt="icon" />
+      case "YEN":
+        return <img width={30} src={yen} alt="icon" />
+      default:
+        return <></>
+    }
+  }
 
   return (
     <>
       <form className="my-3 px-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <InputLabel className="ml-2" htmlFor="username">From</InputLabel>
+          <InputLabel className="ml-2" htmlFor="from">From</InputLabel>
           <TextField
             size="small"
             fullWidth
@@ -55,7 +98,7 @@ const SendAssetForm = () => {
             disabled
             id="from"
             variant="outlined"
-            {...register("from", { required: true })}
+            defaultValue={wallet.walletAddress}
           />
         </div>
 
@@ -80,8 +123,20 @@ const SendAssetForm = () => {
             hiddenLabel
             id="asset"
             variant="outlined"
-            disabled
-            onClick={handleFocusAsset}
+            onClick={handleClickAsset}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  {assetIcon(getValues("asset"))}
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="start">
+                  <img width={30} src={layerIcon} alt="icon" />
+                </InputAdornment>
+              ),
+              readOnly: true,
+            }}
             {...register("asset", { required: true })}
           />
           {errors.asset && <p>This field is required</p>}
@@ -96,11 +151,19 @@ const SendAssetForm = () => {
             type="number"
             id="amount"
             variant="outlined"
-            {...register("amount", { required: true })}
+            {...register("amount", { required: true, min: 0, max: chosenAsset.balance })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <button onClick={handleClickMax} className="btn-adorment">Max</button>
+                </InputAdornment>
+              ),
+            }}
           />
           {errors.amount && <p>This field is required</p>}
         </div>
-        <div className="py-3 grid grid-cols-2 gap-4">
+
+        <div className="py-5 grid grid-cols-2 gap-4">
           <button onClick={handleClickCancle} className="btn text-blue-500 bg-blue-50 hover:bg-blue-100">Cancel</button>
           <button className="btn btn-blue hover:bg-gradient-to-l hover:from-blue-400 hover:via-blue-500 hover:to-blue-600" type="submit">Send</button>
         </div>
@@ -129,7 +192,24 @@ const SendAssetForm = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent dividers>
-          <Currency />
+          {
+            wallet.assets && wallet.assets.map((asset, key) => <AssetItem key={key} asset={asset} onClick={handleChooseAsset} />)
+          }
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={openSuccessDialog}
+        maxWidth="xs"
+        fullWidth={true}
+      >
+        <DialogContent>
+          <p className="text-center text-xl font-bold py-3">Successfully sent</p>
+          <div className="py-5">
+            Your <span className="font-bold">{chosenAsset.name}</span> has been sent! <br />
+            Thank you for using our service
+          </div>
+          <button onClick={() => history.goBack()} className="btn btn-blue w-full">OK</button>
         </DialogContent>
       </Dialog>
     </>

@@ -1,0 +1,64 @@
+[
+  {
+    "id": 1,
+    "accountId": 1,
+    "walletAddress": "675848886",
+    "assets": [
+      {
+        "currency": {
+          "id": 1,
+          "name": "USD",
+          "exchangeRate": 23000
+        },
+        "balance": 1000
+      },
+      {
+        "currency": {
+          "id": 2,
+          "name": "EUR",
+          "exchangeRate": 26640
+        },
+        "balance": 50
+      },
+      {
+        "currency": {
+          "id": 3,
+          "name": "YEN",
+          "exchangeRate": 205
+        },
+        "balance": 10000
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "accountId": 2,
+    "walletAddress": "675848886",
+    "assets": [
+      {
+        "currency": {
+          "id": 1,
+          "name": "USD",
+          "exchangeRate": 23000
+        },
+        "balance": 2000
+      },
+      {
+        "currency": {
+          "id": 2,
+          "name": "EUR",
+          "exchangeRate": 26640
+        },
+        "balance": 100
+      },
+      {
+        "currency": {
+          "id": 3,
+          "name": "YEN",
+          "exchangeRate": 205
+        },
+        "balance": 20000
+      }
+    ]
+  }
+]

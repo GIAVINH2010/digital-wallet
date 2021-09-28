@@ -15,15 +15,15 @@ const AppRouter = () => {
     <Router>
       <div className="w-96 mx-auto py-8">
         <Switch>
-          <Route path="/auth">
+          <Route path={`${process.env.REACT_APP_PUBLIC_URL}/auth`}>
             <Switch>
-              <AuthRoute path="/auth/login" component={Login} />
+              <AuthRoute path={`${process.env.REACT_APP_PUBLIC_URL}/auth/login`} component={Login} />
             </Switch>
           </Route>
-          <Route path="/">
+          <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`}>
             <Switch>
-              <PrivateRoute exact path="/" component={Home} />
-              <PrivateRoute path="/send" component={SendAsset} />
+              <PrivateRoute exact path={`${process.env.REACT_APP_PUBLIC_URL}/`} component={Home} />
+              <PrivateRoute path={`${process.env.REACT_APP_PUBLIC_URL}/send`} component={SendAsset} />
             </Switch>
           </Route>
         </Switch>

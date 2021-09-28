@@ -14,7 +14,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors }
   } = useForm<Inputs>();
 
@@ -26,7 +26,7 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     localStorage.setItem("TOKEN", JSON.stringify(new Date()))
-    history.push('/')
+    history.push("/")
   }; // your form submit function which will invoke after successful validation
 
   // console.log(watch("password")); // you can watch individual input by pass the name of the input

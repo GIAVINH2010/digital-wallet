@@ -1,8 +1,8 @@
 import {
-  BrowserRouter as Router,
+  HashRouter,
+  // BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
 } from 'react-router-dom'
 import { PrivateRoute, AuthRoute } from 'core/utils/router/customRoutes'
 
@@ -12,23 +12,23 @@ import SendAsset from 'modules/home/pages/SendAsset'
 
 const AppRouter = () => {
   return (
-    <Router>
+    <HashRouter>
       <div className="w-96 mx-auto py-8">
         <Switch>
-          <Route path={`${process.env.REACT_APP_PUBLIC_URL}/auth`}>
+          <Route path="/auth">
             <Switch>
-              <AuthRoute path={`${process.env.REACT_APP_PUBLIC_URL}/auth/login`} component={Login} />
+              <AuthRoute path="/auth/login" component={Login} />
             </Switch>
           </Route>
-          <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`}>
+          <Route path="/">
             <Switch>
-              <PrivateRoute exact path={`${process.env.REACT_APP_PUBLIC_URL}/`} component={Home} />
-              <PrivateRoute path={`${process.env.REACT_APP_PUBLIC_URL}/send`} component={SendAsset} />
+              <PrivateRoute exact path="/" component={Home} />
+              <PrivateRoute path="/send" component={SendAsset} />
             </Switch>
           </Route>
         </Switch>
       </div>
-    </Router>
+    </HashRouter>
   )
 }
 

@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl font-semibold tracking-wide;
+  }
+  .btn {
+    @apply py-2.5 px-5 font-semibold rounded-lg;
+  }
+  .btn-blue {
+    @apply text-white bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
-import { InputAdornment, TextField, IconButton, InputLabel, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import { VisibilityOff, Visibility, Close } from '@mui/icons-material'
+import { TextField, IconButton, InputLabel, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Close } from '@mui/icons-material'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import Currency from "core/components/Assets/Currency";
@@ -17,7 +17,7 @@ const SendAssetForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors }
   } = useForm<Inputs>();
 

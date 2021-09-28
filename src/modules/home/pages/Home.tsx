@@ -16,7 +16,7 @@ const Home = () => {
             <span className="block w-2 h-2 bg-blue-500 rounded m-2"></span>
             Ronin Wallet
           </div>
-          <img src={profileIcon} />
+          <img src={profileIcon} alt="profile-icon"/>
         </div>
         <div className="p-5 my-5 shadow-2xl rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 divide-y divide-blue-200">
           <div className="flex flex-row justify-between mb-3">
@@ -25,7 +25,7 @@ const Home = () => {
               &nbsp;
               (<span>7300 3777 3888 3334</span>)
             </div>
-            <img className="cursor-pointer p-1 rounded hover:bg-blue-600" src={copyIcon} />
+            <img className="cursor-pointer p-1 rounded hover:bg-blue-600" src={copyIcon} alt="copy-icon"/>
           </div>
           <div className="flex flex-row justify-between">
             <div className="text-white mt-3">
@@ -37,7 +37,7 @@ const Home = () => {
               </div>
             </div>
 
-            <img className="self-end" src={ronin} />
+            <img className="self-end" src={ronin} alt="ronin"/>
           </div>
         </div>
         <div className="flex flex-row justify-center">

@@ -1,9 +1,8 @@
 import {
   HashRouter,
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
 } from 'react-router-dom'
 import { PrivateRoute, AuthRoute } from 'core/utils/router/customRoutes'
 

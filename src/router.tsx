@@ -1,4 +1,5 @@
 import {
+  HashRouter,
   BrowserRouter as Router,
   Switch,
   Route,
@@ -12,7 +13,7 @@ import SendAsset from 'modules/home/pages/SendAsset'
 
 const AppRouter = () => {
   return (
-    <Router>
+    <HashRouter>
       <div className="w-96 mx-auto py-8">
         <Switch>
           <Route path="/auth">
@@ -28,7 +29,7 @@ const AppRouter = () => {
           </Route>
         </Switch>
       </div>
-    </Router>
+    </HashRouter>
   )
 }
 

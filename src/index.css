@@ -22,3 +22,13 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+label {
+  @apply ml-2 text-gray-600 font-semibold uppercase;
+  font-size: 0.625rem;
+}
+
+.validate-text {
+  @apply mt-1 ml-2 text-red-600;
+  font-size: 0.625rem;
+}

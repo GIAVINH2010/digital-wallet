@@ -11,7 +11,7 @@ interface AssetItemProps {
 }
 
 const AssetItem = ({ asset, onClick }: AssetItemProps) => {
-  const { balance, currency: { name, exchangeRate } } = asset
+  const { balance, currency: { id, name, exchangeRate } } = asset
 
   const assetIcon = (name: string) => {
     switch (name) {
@@ -27,7 +27,7 @@ const AssetItem = ({ asset, onClick }: AssetItemProps) => {
   }
 
   return (
-    <div className="cursor-pointer w-full mb-2" onClick={() => onClick(name, balance)}>
+    <div className="cursor-pointer w-full mb-2" onClick={() => onClick(id, name, balance)}>
       <div className="flex items-center rounded-lg bg-blue-50 hover:bg-blue-100 px-3 py-3">
         <div className="mx-2">
           {assetIcon(name)}

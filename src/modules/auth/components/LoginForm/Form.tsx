@@ -1,5 +1,5 @@
 import React from "react";
-import { InputAdornment, TextField, IconButton, InputLabel } from '@mui/material';
+import { InputAdornment, TextField, IconButton } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router";
@@ -34,20 +34,21 @@ const LoginForm = () => {
   return (
     <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
-        <InputLabel className="ml-2" htmlFor="username">Username</InputLabel>
+        <label htmlFor="username">Username</label>
         <TextField
           size="small"
           fullWidth
           hiddenLabel
           id="username"
           variant="outlined"
+          error={errors.username && true}
           {...register("username", { required: true })}
         />
-        {errors.username && <p>This field is required</p>}
+        {errors.username && <p className="validate-text">This field is required</p>}
       </div>
 
       <div className="mb-3">
-        <InputLabel className="ml-2" htmlFor="password">Password</InputLabel>
+        <label htmlFor="password">Password</label>
         <TextField
           size="small"
           fullWidth
@@ -66,9 +67,10 @@ const LoginForm = () => {
             </InputAdornment>,
           }}
           variant="outlined"
+          error={errors.password && true}
           {...register("password", { required: true })}
         />
-        {errors.password && <p>This field is required</p>}
+        {errors.password && <p className="validate-text">This field is required</p>}
       </div>
       <div className="py-3">
         <button className="block mx-auto btn btn-blue" type="submit" >Unlock</button>

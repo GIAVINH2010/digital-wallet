@@ -1,6 +1,6 @@
 import { useState, MouseEvent } from "react";
 import { useSelector } from "react-redux";
-import { TextField, IconButton, InputLabel, Dialog, DialogTitle, DialogContent, InputAdornment } from '@mui/material';
+import { TextField, IconButton, Dialog, DialogTitle, DialogContent, InputAdornment } from '@mui/material';
 import { Close } from '@mui/icons-material'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -15,11 +15,12 @@ import { getWallet } from 'modules/home/store/actions';
 
 type Inputs = {
   to: string;
-  asset: string;
+  asset: number;
   amount: number;
 };
 
 type ChosenAsset = {
+  id: number
   name: string
   balance: number
 }
@@ -28,6 +29,7 @@ const SendAssetForm = () => {
   const history = useHistory();
 
   const [chosenAsset, setChosenAsset] = useState<ChosenAsset>({
+    id: 0,
     name: "",
     balance: 0
   });
@@ -40,7 +42,6 @@ const SendAssetForm = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors }
   } = useForm<Inputs>();
 
@@ -55,16 +56,16 @@ const SendAssetForm = () => {
     setOpenAssetDialog(true)
   }
 
-  const handleChooseAsset = (name: string, balance: number) => {
-    setValue("asset", name)
+  const handleChooseAsset = (id: number, name: string, balance: number) => {
+    setValue("asset", id, { shouldValidate: true }) // setValue and trigger validation again
     setOpenAssetDialog(false)
-    setChosenAsset({ name, balance })
+    setChosenAsset({ id, name, balance })
   }
 
   const handleClickMax = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (chosenAsset.balance === 0) return true
-    setValue("amount", chosenAsset.balance)
+    setValue("amount", chosenAsset.balance, { shouldValidate: true })
   }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -90,7 +91,7 @@ const SendAssetForm = () => {
     <>
       <form className="my-3 px-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <InputLabel className="ml-2" htmlFor="from">From</InputLabel>
+          <label htmlFor="from">From</label>
           <TextField
             size="small"
             fullWidth
@@ -103,20 +104,21 @@ const SendAssetForm = () => {
         </div>
 
         <div className="mb-4">
-          <InputLabel className="ml-2" htmlFor="to">To</InputLabel>
+          <label htmlFor="to">To</label>
           <TextField
             size="small"
             fullWidth
             hiddenLabel
             id="to"
             variant="outlined"
+            error={errors.to && true}
             {...register("to", { required: true })}
           />
-          {errors.to && <p>This field is required</p>}
+          {errors.to && <p className="validate-text">This field is required</p>}
         </div>
 
         <div className="mb-4">
-          <InputLabel className="ml-2" htmlFor="asset">Asset</InputLabel>
+          <label htmlFor="asset">Asset</label>
           <TextField
             size="small"
             fullWidth
@@ -124,10 +126,11 @@ const SendAssetForm = () => {
             id="asset"
             variant="outlined"
             onClick={handleClickAsset}
+            value={chosenAsset.name}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {assetIcon(getValues("asset"))}
+                  {assetIcon(chosenAsset.name)}
                 </InputAdornment>
               ),
               endAdornment: (
@@ -137,13 +140,18 @@ const SendAssetForm = () => {
               ),
               readOnly: true,
             }}
-            {...register("asset", { required: true })}
+            error={errors.asset && true}
+          // {...register("asset", { required: true })}
           />
-          {errors.asset && <p>This field is required</p>}
+          <input hidden {...register("asset", { required: true })} />
+          {errors.asset && <p className="validate-text">This field is required</p>}
         </div>
 
         <div className="mb-4">
-          <InputLabel className="ml-2" htmlFor="amount">Amount</InputLabel>
+          <div className="flex justify-between items-center">
+            <label htmlFor="amount">Amount</label>
+            {chosenAsset.id ? <span className="mr-2 text-gray-500 font-semibold text-xs uppercase">Available: {chosenAsset.balance} {chosenAsset.name}</span> : <></>}
+          </div>
           <TextField
             size="small"
             fullWidth
@@ -151,6 +159,7 @@ const SendAssetForm = () => {
             type="number"
             id="amount"
             variant="outlined"
+            error={errors.amount && true}
             {...register("amount", { required: true, min: 0, max: chosenAsset.balance })}
             InputProps={{
               endAdornment: (
@@ -160,7 +169,7 @@ const SendAssetForm = () => {
               ),
             }}
           />
-          {errors.amount && <p>This field is required</p>}
+          {errors.amount && <p className="validate-text">This field is required</p>}
         </div>
 
         <div className="py-5 grid grid-cols-2 gap-4">

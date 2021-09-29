@@ -59,7 +59,6 @@ const LoginForm = () => {
               <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
-                // onMouseDown={handleMouseDownPassword}
                 edge="end"
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}

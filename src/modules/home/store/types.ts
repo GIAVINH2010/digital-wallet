@@ -10,9 +10,10 @@ export interface Asset {
 }
 
 export interface Wallet {
-  id: number;
-  userId: number;
-  assets: Asset[];
+  id?: number;
+  accountId?: number;
+  walletAddress?: string;
+  assets?: Asset[];
 }
 
 export interface HomeState {

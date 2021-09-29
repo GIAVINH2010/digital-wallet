@@ -12,4 +12,13 @@
   .btn-blue {
     @apply text-white bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400;
   }
+  .btn-adorment {
+    @apply text-xs py-1 uppercase px-3 rounded-2xl text-blue-500 bg-blue-100 hover:bg-blue-200;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

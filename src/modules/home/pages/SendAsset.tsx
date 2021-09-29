@@ -7,8 +7,9 @@ import SendAssetForm from '../components/SendAssetForm/Form';
 
 const SendAsset = () => {
   const history = useHistory();
+
   return (
-    <>
+    <div className="px-3">
       <div className="relative p-3 mb-2">
         <div className="absolute left-0 top-1">
           <IconButton onClick={() => history.goBack()}>
@@ -20,7 +21,7 @@ const SendAsset = () => {
         </div>
       </div>
       <SendAssetForm />
-    </>
+    </div>
   )
 }
 

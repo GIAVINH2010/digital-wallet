@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import logo from 'assets/images/logo.svg'
 
-import LoginForm from 'modules/auth/components/LoginForm/Form'
+import RegisterForm from 'modules/auth/components/RegisterForm/Form'
 
 const Login = () => {
   return (
@@ -13,9 +13,9 @@ const Login = () => {
         <h1 className="text-center py-2">Ronin Wallet</h1>
         <p className="text-center tracking-wide pt-1 pb-2">Your Digital Passport</p>
         <div className="flex justify-center">
-          <Link className="text-sm text-blue-500" to="/auth/register">Register</Link>
+          <Link className="text-sm text-blue-500" to="/auth/login">Login</Link>
         </div>
-        <LoginForm />
+        <RegisterForm />
       </div>
     </>
   )

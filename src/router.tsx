@@ -7,6 +7,7 @@ import {
 import { PrivateRoute, AuthRoute } from 'core/utils/router/customRoutes'
 
 import Login from 'modules/auth/pages/Login'
+import Register from 'modules/auth/pages/Register'
 import Home from 'modules/home/pages/Home'
 import SendAsset from 'modules/home/pages/SendAsset'
 
@@ -18,6 +19,7 @@ const AppRouter = () => {
           <Route path="/auth">
             <Switch>
               <AuthRoute path="/auth/login" component={Login} />
+              <AuthRoute path="/auth/register" component={Register} />
             </Switch>
           </Route>
           <Route path="/">

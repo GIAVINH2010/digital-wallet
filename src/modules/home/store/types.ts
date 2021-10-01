@@ -1,5 +1,5 @@
 export interface Currency {
-  id: number;
+  _id: string;
   name: string;
   exchangeRate: number;
 }
@@ -15,7 +15,13 @@ export interface Wallet {
   walletAddress?: string;
   assets?: Asset[];
 }
-
 export interface HomeState {
   wallet: Wallet;
+}
+
+export interface FundParams {
+  fromAdr: number;
+  toAdr: number;
+  currencyId: string;
+  amount: number;
 }

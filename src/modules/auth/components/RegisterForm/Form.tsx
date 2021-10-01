@@ -4,14 +4,15 @@ import { VisibilityOff, Visibility } from '@mui/icons-material'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router";
 
-import { login } from 'modules/auth/store/actions'
+import { signup } from 'modules/auth/store/actions'
 
 type Inputs = {
   username: string;
   password: string;
+  email: string;
 };
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const history = useHistory()
   const {
     register,
@@ -27,9 +28,9 @@ const LoginForm = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const result = await login(data)
+    const result = await signup(data)
     if (result) {
-      history.push("/")
+      history.push("/auth/login")
     }
   }; // your form submit function which will invoke after successful validation
 
@@ -76,11 +77,30 @@ const LoginForm = () => {
         />
         {errors.password && <p className="validate-text">This field is required</p>}
       </div>
-      <div className="py-3">
-        <button className="block mx-auto btn btn-blue" type="submit">Unlock</button>
+      <div className="mb-3">
+        <label htmlFor="email">Email</label>
+        <TextField
+          size="small"
+          fullWidth
+          hiddenLabel
+          id="email"
+          variant="outlined"
+          error={errors.email && true}
+          {...register("email", {
+            required: true, pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address"
+            }
+          })}
+        />
+        {errors.email && !errors.email?.message && <p className="validate-text">This field is required</p>}
+        {errors.email?.message && <p className="validate-text">{errors.email?.message}</p>}
       </div>
-    </form>
+      <div className="py-3">
+        <button className="block mx-auto btn btn-blue" type="submit">Register</button>
+      </div>
+    </form >
   );
 }
 
-export default LoginForm
+export default RegisterForm

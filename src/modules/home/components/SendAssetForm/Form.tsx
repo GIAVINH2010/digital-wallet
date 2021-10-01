@@ -11,16 +11,16 @@ import eur from 'assets/icons/currencies/eur.png'
 import layerIcon from 'assets/icons/layer-icon.svg'
 
 import { RootState } from 'store/store';
-import { getWallet } from 'modules/home/store/actions';
+import { getWallet, sendWalletFund } from 'modules/home/store/actions';
 
 type Inputs = {
-  to: string;
-  asset: number;
+  toAdr: number;
+  currencyId: string;
   amount: number;
 };
 
 type ChosenAsset = {
-  id: number
+  currencyId: string
   name: string
   balance: number
 }
@@ -29,7 +29,7 @@ const SendAssetForm = () => {
   const history = useHistory();
 
   const [chosenAsset, setChosenAsset] = useState<ChosenAsset>({
-    id: 0,
+    currencyId: "",
     name: "",
     balance: 0
   });
@@ -51,15 +51,15 @@ const SendAssetForm = () => {
     history.goBack()
   }
 
-  const handleClickAsset = () => {
-    getWallet(2)
+  const handleClickAsset = async () => {
     setOpenAssetDialog(true)
+    await getWallet()
   }
 
-  const handleChooseAsset = (id: number, name: string, balance: number) => {
-    setValue("asset", id, { shouldValidate: true }) // setValue and trigger validation again
+  const handleChooseAsset = (currencyId: string, name: string, balance: number) => {
+    setValue("currencyId", currencyId, { shouldValidate: true }) // setValue and trigger validation again
     setOpenAssetDialog(false)
-    setChosenAsset({ id, name, balance })
+    setChosenAsset({ currencyId, name, balance })
   }
 
   const handleClickMax = (event: MouseEvent<HTMLButtonElement>) => {
@@ -68,9 +68,18 @@ const SendAssetForm = () => {
     setValue("amount", chosenAsset.balance, { shouldValidate: true })
   }
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('%cForm.tsx line:71 data', 'color: white; background-color: #007acc;', data);
-    setOpenSuccessDialog(true)
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const params = {
+      fromAdr: Number(wallet.walletAddress),
+      toAdr: Number(data.toAdr),
+      currencyId: data.currencyId,
+      amount: Number(data.amount)
+    }
+    const result = await sendWalletFund(params)
+    if (result) {
+      setOpenSuccessDialog(true)
+
+    }
 
   }; // your form submit function which will invoke after successful validation
 
@@ -107,14 +116,15 @@ const SendAssetForm = () => {
           <label htmlFor="to">To</label>
           <TextField
             size="small"
+            type="number"
             fullWidth
             hiddenLabel
             id="to"
             variant="outlined"
-            error={errors.to && true}
-            {...register("to", { required: true })}
+            error={errors.toAdr && true}
+            {...register("toAdr", { required: true })}
           />
-          {errors.to && <p className="validate-text">This field is required</p>}
+          {errors.toAdr && <p className="validate-text">This field is required</p>}
         </div>
 
         <div className="mb-4">
@@ -140,17 +150,17 @@ const SendAssetForm = () => {
               ),
               readOnly: true,
             }}
-            error={errors.asset && true}
+            error={errors.currencyId && true}
           // {...register("asset", { required: true })}
           />
-          <input hidden {...register("asset", { required: true })} />
-          {errors.asset && <p className="validate-text">This field is required</p>}
+          <input hidden {...register("currencyId", { required: true })} />
+          {errors.currencyId && <p className="validate-text">This field is required</p>}
         </div>
 
         <div className="mb-4">
           <div className="flex justify-between items-center">
             <label htmlFor="amount">Amount</label>
-            {chosenAsset.id ? <span className="mr-2 text-gray-500 font-semibold text-xs uppercase">Available: {chosenAsset.balance} {chosenAsset.name}</span> : <></>}
+            {chosenAsset.currencyId !== "" ? <span className="mr-2 text-gray-500 font-semibold text-xs uppercase">Available: {chosenAsset.balance} {chosenAsset.name}</span> : <></>}
           </div>
           <TextField
             size="small"

@@ -1,10 +1,17 @@
-// import { useEffect, useState, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { resetAxiosToken } from 'core/utils/axios'
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
-  const token = localStorage.getItem('TOKEN')
+  const token = localStorage.getItem('token')
 
   const hasToken = !!token
+
+  useLayoutEffect(() => {
+    if (hasToken) {
+      resetAxiosToken()
+    }
+  }, [hasToken])
 
   return (
     <Route
@@ -21,7 +28,7 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => {
 }
 
 const AuthRoute = ({ component: Component, ...rest }: any) => {
-  const token = localStorage.getItem('TOKEN')
+  const token = localStorage.getItem('token')
 
   const hasToken = !!token
 

@@ -12,6 +12,7 @@ import currencyFormatter from 'core/utils/helpers/currencyFormatter';
 
 import { RootState } from 'store/store'
 import { Asset } from 'modules/home/store/types'
+import { logout } from 'modules/auth/store/actions'
 import { getWallet } from 'modules/home/store/actions'
 
 const Home = () => {
@@ -19,12 +20,18 @@ const Home = () => {
 
   const wallet = useSelector((state: RootState) => state.home.wallet);
 
-  const usdAsset = wallet.assets?.find((asset: Asset) => asset.currency.id === 1)
-  const assets = wallet.assets?.filter((asset: Asset) => asset.currency.id !== 1)
+  const usdAsset = wallet.assets?.find((asset: Asset) => asset.currency.name === "USD")
+  const assets = wallet.assets?.filter((asset: Asset) => asset.currency.name !== "USD")
 
   useEffect(() => {
-    getWallet(1)
+    (async () => {
+      await getWallet()
+    })()
   }, [])
+
+  const handleClickLogout = () => {
+    logout()
+  }
 
   return (
     <>
@@ -34,7 +41,9 @@ const Home = () => {
             <span className="block w-2 h-2 bg-blue-500 rounded m-2"></span>
             Ronin Wallet
           </div>
-          <img src={profileIcon} alt="profile-icon" />
+          <button onClick={handleClickLogout}>
+            <img className="mx-auto p-1 rounded-lg hover:bg-blue-100" src={profileIcon} alt="profile-icon" />
+          </button>
         </div>
         <div className="p-5 my-5 shadow-2xl rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 divide-y divide-blue-200">
           <div className="flex flex-row justify-between mb-3">
